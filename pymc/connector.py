@@ -16,14 +16,9 @@ class PYMCLink:
     # "~~" Error Packet
     
     def _recv(self):
-        data = None
-        while True:
-            data = self._wb.recv()
-            if data[0].lower() == "!".lower():
-                break
-            elif data[0].lower() == "%".lower():
-                self._pingdata = data[0:]
-        return data[0:]
+        data = self._wb.recv()
+        if data[0].lower() == "!".lower():
+            return data[0:]
     
     def _format_uuid(self,raw_uuid):
         if len(raw_uuid) != 32:
