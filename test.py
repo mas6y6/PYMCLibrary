@@ -1,3 +1,4 @@
 import pymc
+from pymc.world import Weather
 w = pymc.PYMCLink("localhost")
-print(w._handshakedata)
+w.getworld("world").setweather(Weather.RAIN)
