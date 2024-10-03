@@ -1,4 +1,3 @@
-from .utils import Difficulty
 from .block import Block
 
 class Environment:

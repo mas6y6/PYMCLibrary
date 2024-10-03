@@ -1,3 +1,6 @@
 import pymc
-w = pymc.PYMCLink("127.0.0.1")
-print(w.getplayerbyuuid("df741692-5394-4da3-8079-bd25ba797dae")._raw)
+from pymc.world import Weather
+
+link = pymc.PYMCLink("127.0.0.1")
+while True:
+    print(link.getplayerbyusername("mas6y6").health)

@@ -41,7 +41,6 @@ class Player:
         self.address = self._raw_split[22]
         self.latency = self._raw_split[23]
         
-    
     def getlocation(self) -> Location:
         self._conn._wb.send(f"!player*{self.uuid}*getloc")
         data = self._conn._recv()
@@ -51,6 +50,18 @@ class Player:
     
     def giveitem(self,itemname: str,amount: int) -> None:
         self._conn._wb.send(f"!player*{self.uuid}*giveitem*{itemname}*{amount}")
+        data = self._conn._recv()
+        if data[0] == "~":
+            raise JavaException(f"An error occurred {data.split('*')[1]}")
+    
+    def removeitem(self,itemname: str,amount: int) -> None:
+        self._conn._wb.send(f"!player*{self.uuid}*removeitem*{itemname}*{amount}")
+        data = self._conn._recv()
+        if data[0] == "~":
+            raise JavaException(f"An error occurred {data.split('*')[1]}")
+    
+    def sendmessage(self,message: str) -> None:
+        self._conn._wb.send(f"!player*{self.uuid}*sendmessage*{message}")
         data = self._conn._recv()
         if data[0] == "~":
             raise JavaException(f"An error occurred {data.split('*')[1]}")
