@@ -64,13 +64,24 @@ class PYMCLink:
         else:
             raise BukkitError("Player not found")
     
-    def getworld(self,string: str):
-        self._wb.send(f"!world*{string}*getworld")
+    def getworld(self,worldname: str):
+        self._wb.send(f"!world*{worldname}*getworld")
         data = self._recv()
         if data[0] == "~":
             raise JavaException(data[0:])
         else:
             return World(data[0:],self)
+    
+    def getallonlineplayers(self):
+        self._wb.send(f"!bukkit*getallonlineplayers")
+        data = self._recv()
+        list = []
+        if data[0] == "~":
+            raise JavaException(data[0:])
+        else:
+            for i in list(data):
+                list.insert(Player(i,self))
+            return list
     
     def close(self):
         self._wb.close()

@@ -1,5 +1,5 @@
 from .location import Location
-from .exception import JavaException
+from .exception import JavaException, BukkitError
 
 class Player:
     def __init__(self,_raw_data: str, _conn):
@@ -71,11 +71,35 @@ class Player:
         data = self._conn._recv()
         if data[0] == "~":
             raise JavaException(f"An error occurred {data.split('*')[1]}")
+    
+    def sendactionbar(self,message: str) -> None:
+        self._conn._wb.send(f"!player*{self.uuid}*sendactionbar*{message}")
+        data = self._conn._recv()
+        if data[0] == "~":
+            raise JavaException(f"An error occurred {data.split('*')[1]}")
+    
+    def addeffect(self,potion: str, duration: int, amplifier: int) -> None:
+        self._conn._wb.send(f"!player*{self.uuid}*addeffect*{potion}*{duration}*{amplifier}")
+        data = self._conn._recv()
+        if data[0] == "~":
+            raise JavaException(f"An error occurred {data.split('*')[1]}")
+        elif data.split("*")[1] == "potionnotfound":
+            raise BukkitError("Potion Not Found")
+    
+    def removeeffect(self,potion: str) -> None:
+        self._conn._wb.send(f"!player*{self.uuid}*removeeffect*{potion}")
+        data = self._conn._recv()
+        if data[0] == "~":
+            raise JavaException(f"An error occurred {data.split('*')[1]}")
+        elif data.split("*")[1] == "potionnotfound":
+            raise BukkitError("Potion Not Found")
+        
 
 class Difficulty:
+    PEACEFUL = "PEACEFUL"
     EASY = "EASY"
-    NORMAL = "EASY"
-    HARD = "EASY"
+    NORMAL = "NORMAL"
+    HARD = "HARD"
 
 class Gamemode:
     SURVIVAL = "SURVIVAL"
