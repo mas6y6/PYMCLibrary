@@ -46,7 +46,7 @@ class Player:
         data = self._conn._recv()
         if data[0] == "~":
             raise JavaException(f"An error occurred {data.split('*')[1]}")
-        return Location(data,self._conn)
+        return Location(data,self)
     
     def giveitem(self,itemname: str,amount: int) -> None:
         self._conn._wb.send(f"!player*{self.uuid}*giveitem*{itemname}*{amount}")
@@ -62,6 +62,12 @@ class Player:
     
     def sendmessage(self,message: str) -> None:
         self._conn._wb.send(f"!player*{self.uuid}*sendmessage*{message}")
+        data = self._conn._recv()
+        if data[0] == "~":
+            raise JavaException(f"An error occurred {data.split('*')[1]}")
+    
+    def sendtitle(self,title: str,subtitle: str,fadein=10,stay=70,fadeout=20) -> None:
+        self._conn._wb.send(f"!player*{self.uuid}*sendtitle*{title}*{subtitle}*{fadein}*{stay}*{fadeout}")
         data = self._conn._recv()
         if data[0] == "~":
             raise JavaException(f"An error occurred {data.split('*')[1]}")
